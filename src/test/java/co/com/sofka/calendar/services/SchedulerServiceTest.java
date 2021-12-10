@@ -32,7 +32,7 @@ class SchedulerServiceTest {
 
 
     @Test
-        //TODO: modificar el test para que el act sea reactivo, usando stepverifier
+
     void generateCalendar() {
         var programId = "xxxx";
         var startDate = LocalDate.of(2022, 1, 1);
@@ -40,9 +40,8 @@ class SchedulerServiceTest {
         Program program = getProgramDummy();
 
         Mockito.when(repository.findById(programId)).thenReturn(Mono.just(program));
-        //TODO: hacer una subscripción de el servicio reactivo
-        Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
 
+        Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
 
         //Comprueba numero de dias
         StepVerifier.create(response)
@@ -93,11 +92,12 @@ class SchedulerServiceTest {
         Mockito.when(repository.findById(programId)).thenReturn(Mono.empty());
 
         //TODO: hacer de otro modo
-        var exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            schedulerService.generateCalendar(programId, startDate);//TODO: hacer una subscripción de el servicio reactivo
+        Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
 
-        });
-        Assertions.assertEquals("El programa academnico no existe", exception.getMessage());//TODO: hacer de otro modo
+        StepVerifier.create(response)
+                .expectErrorMessage("errror de flujo")
+                .verify();
+
         Mockito.verify(repository).findById(programId);
 
     }
