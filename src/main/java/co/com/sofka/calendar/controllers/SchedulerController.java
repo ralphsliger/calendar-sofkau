@@ -3,6 +3,7 @@ package co.com.sofka.calendar.controllers;
 
 import co.com.sofka.calendar.model.ProgramDate;
 import co.com.sofka.calendar.repositories.ProgramDateRepository;
+import co.com.sofka.calendar.services.ProgramDateService;
 import co.com.sofka.calendar.services.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class SchedulerController {
     SchedulerService service;
 
     @Autowired
-    ProgramDateRepository serviceDate;
+    ProgramDateService serviceDate;
 
 
     @GetMapping("/generate/{date}/{id}")
@@ -32,7 +33,7 @@ public class SchedulerController {
 
     @GetMapping("/getAll")
     private Flux<ProgramDate> getAll() {
-        return serviceDate.findAll();
+        return serviceDate.getAll();
     }
 
 }
